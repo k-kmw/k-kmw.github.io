@@ -16,19 +16,25 @@ tags: engineering wrting, yolo, object detection
 각 그리드 셀마다 해당 셀을 포함하는 2개의 바운딩 박스를 생성한다. 앞 두개의 5열은 각 바운딩 박스 중심의 x좌표, y좌표, 너비, 높이와 바운딩 박스내에 객체가 존재할 확률Pc인 신뢰도를 나타낸다. 여기서 𝑃𝑐=𝑃𝑟(𝑜𝑏𝑗𝑒𝑐𝑡)∗𝐼𝑜𝑈(𝑡𝑟𝑢𝑡ℎ, 𝑝𝑟𝑒𝑑), 𝑃𝑟(𝑜𝑏𝑗𝑒𝑐𝑡)은 박스에 물체가 존재하면 1, 존재하지 않으면 0을 나타내고 𝐼𝑜𝑈(𝑡𝑟𝑢𝑡ℎ, 𝑝𝑟𝑒𝑑)은 예측한 박스가 실제 정답과 얼마나 겹치는지를 나타낸다.
 
 ![]({{site.baseurl}}/images/20231005/img1.png)
+
 그림1 7x7 grid cell 
+
 ![]({{site.baseurl}}/images/20231005/img2.png)
+
 그림2 class score
 
 이후 바운딩 박스의 class scores를 구한다. P_r (class_i│object)*P_r (object)*IoU(truth, pred)=P_r (class_i )*IoU(true, pred). 즉, 그리드 셀의 클래스 레이블 score * 바운딩 박스 내에 객체가 존재할 확률이다. Class scores는 클래스가 바운딩 박스에 등장할 확률과 객체가 예측된 박스에 얼마나 잘 맞는지를 나타낸다.
 
 ![]({{site.baseurl}}/images/20231005/img3.png)
+
 그림3 class scores 구하는 과정
 
 그림에서 7x7개의 셀이 존재하여 각 그리드 셀마다 2개의 바운딩 박스를 그리므로, 총 98개의 바운딩 박스에 대한 클래스 scores를 생성한다.
 
 ![]({{site.baseurl}}/images/20231005/img4.png)
-그림4 class scores 생성 ![]({{site.baseurl}}/images/20231005/img5.png) ![]({{site.baseurl}}/images/20231005/img6.png)
+![]({{site.baseurl}}/images/20231005/img5.png) ![]({{site.baseurl}}/images/20231005/img6.png)
+
+그림4 class scores 생성
 
 #### Classification
 1. 앞서 구한 class score가 confidence threshold보다 낮을 경우 0으로 만든다. 
@@ -36,18 +42,22 @@ tags: engineering wrting, yolo, object detection
 3. NMS알고리즘을 적용하여 중복되는 바운딩 박스에 대한 해당 클래스 score를 0으로 만든다.
 
 ![]({{site.baseurl}}/images/20231005/img7.png)
+
 그림5 classification 과정
 
+<br>
 **NMS**
 
 하나의 그리드 셀에 대하여 두 개의 바운딩 박스를 예측하므로 같은 객체를 나타내는 여러 중복되는 바운딩 박스가 나타날 수 있다. NMS는 이러한 같은 객체를 나타내는 중복되는 바운딩 박스를 제거하는 과정이다.
 
 ![]({{site.baseurl}}/images/20231005/img8.png)
+
 그림6 NMS
 
 NMS에 IoU개념이 사용된다. IoU는 바운딩 박스의 교집합/합집합 비율로 두 바운딩 박스가 얼마나 겹치는지에 대한 값을 나타낸다.
 
 ![]({{site.baseurl}}/images/20231005/img9.png)
+
 그림7 IoU
 
 앞서 Classification과정에서 Class score에 대하여 내림차순 정렬하였으므로 첫 번째 바운딩 박스 score가 최대(max)가 된다. 
@@ -58,8 +68,11 @@ NMS에 IoU개념이 사용된다. IoU는 바운딩 박스의 교집합/합집합
 5.	각 바운딩 박스의 class scores에서 최대값을 가지는 class로 분류하고 바운딩 박스를 그린다. 
 
 ![]({{site.baseurl}}/images/20231005/img10.png)
+
 그림8
+
 ![]({{site.baseurl}}/images/20231005/img11.png)
+
 그림9
 
 ### YOLO 버전별 비교
