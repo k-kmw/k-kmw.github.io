@@ -86,3 +86,33 @@ NMS에 IoU개념이 사용된다. IoU는 바운딩 박스의 교집합/합집합
 **YOLOv6**
 1. 새로운 백본 도입: RepVGG를 기반으로 한 새로운 백본인 EfficientRep을 도입하여 이전 버전의 백본보다 더 높은 병렬성을 활용한다. 
 2. 새로운 분류 및 회귀 손실 함수를 사용: 분류에는 VariFocal손실을 사용하고 회귀에는 SloU/GloU회귀 손실을 사용한다.
+
+| 버전     | 주요 변경 점                                                                                  |
+| ------ | ---------------------------------------------------------------------------------------- |
+| YOLOv1 | Localization과 Classification을 한 번에 하는 1-stage-detection 방식                               |
+| YOLOv2 | 겹쳐 있는 객체에 대해서 정확도가 떨어지는 단점을 보완하기 위해 Anchor Box 개념을 도입                                    |
+| YOLOv3 | 백본으로 Darknet-53을 사용하고 바운딩 박스의 예측에 로지스틱 회귀를 사용                                            |
+| YOLOv4 | 개선된 아키텍처인 CSPDarknet53을 사용하고 Mosaic기법 도입                                                 |
+| YOLOv5 | CSPDarknet53을 수정한 아키텍처를 사용하고 모델의 파라미터 수에 따라 nano, small, medium, large와 extra-large로 세분화 |
+| YOLOv6 | 이전의 YOLO backbone에 비해 높은 병렬성을 가지는 EfficientRep를 사용                                       |
+표 1 YOLO 버전 별 주요 변경 점
+
+결론
+YOLO는 사물을 분류하는 classification과 위치를 나타내는 localization을 한 번에 하는 1-stage-detection방식을 사용하여 실시간 객체 탐지한다.
+original YOLO에서 발생하는 문제를 개선하여 여러 버전이 출시되었다. 각 버전 별 YOLO 구조와 성능을 요약하면 표 2와 같다.
+
+| **Version** | **Date** | **Anchor** | **Backbone**     | **AP (%)** |
+| ----------- | -------- | ---------- | ---------------- | ---------- |
+| YOLO        | 2015     | NO         | Darknet24        | 63.4       |
+| YOLOv2      | 2016     | YES        | Darknet24        | 63.4       |
+| YOLOv3      | 2018     | YES        | Darknet53        | 36.2       |
+| YOLOv4      | 2020     | YES        | CSPDarknet53     | 43.5       |
+| YOLOv5      | 2020     | YES        | YOLOv5CSPDarknet | 55.8       |
+| YOLOv6      | 2022     | NO         | EfficientRep     | 52.5       |
+표 2 YOLO 버전 별 특징
+
+표 2의 성능 지표(AP)에서 YOLO와 YOLOv2의 경우 VOC2007 데이터셋을 사용하여 평가되었고, 나머지는 COCO2017 데이터셋을 사용하여 평가하였다.
+
+## 참고문헌
+Juan Terven, Diana Cordova-Esparza, “A Comprehensive Review of YOLO: From YOLOv1 and Beyond”, 2023
+https://docs.google.com/presentation/d/1aeRvtKG21KHdD5lg6Hgyhx5rPq_ZOsGjG5rJ1HP7BbA/pub
