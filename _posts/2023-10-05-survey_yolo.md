@@ -81,9 +81,9 @@ NMS에 IoU개념이 사용된다. IoU는 바운딩 박스의 교집합/합집합
 
 **그림9**
 
+<br>
 그림8에서 바운딩 박스와 그림7에서 바운딩 박스 사이의 IoU가 IoU threshold보다 크다고 가정하면 그림8의 바운딩 박스는 제거된다.
 
-<br>
 
 ### YOLO 버전별 비교
 **YOLOv2**
@@ -116,7 +116,6 @@ NMS에 IoU개념이 사용된다. IoU는 바운딩 박스의 교집합/합집합
 
 **표 1 YOLO 버전 별 주요 변경 점**
 
-<br>
 
 ## 결론
 YOLO는 사물을 분류하는 classification과 위치를 나타내는 localization을 한 번에 하는 1-stage-detection방식을 사용하여 실시간 객체 탐지한다.
@@ -125,8 +124,6 @@ original YOLO에서 발생하는 문제를 개선하여 여러 버전이 출시�
 ![]({{site.baseurl}}/images/20231005/table2.png)
 
 **표 2 YOLO 버전 별 특징**
-
-<br>
 
 표 2의 성능 지표(AP)에서 YOLO와 YOLOv2의 경우 VOC2007 데이터셋을 사용하여 평가되었고, 나머지는 COCO2017 데이터셋을 사용하여 평가하였다.
 
