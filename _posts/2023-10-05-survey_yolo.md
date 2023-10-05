@@ -17,24 +17,27 @@ tags: engineering wrting, yolo, object detection
 
 ![]({{site.baseurl}}/images/20231005/img1.png)
 
-그림1 7x7 grid cell 
+**그림1 7x7 grid cell**
 
 ![]({{site.baseurl}}/images/20231005/img2.png)
 
-그림2 class score
+**그림2 class score**
 
+<br>
 이후 바운딩 박스의 class scores를 구한다. P_r (class_i│object)*P_r (object)*IoU(truth, pred)=P_r (class_i )*IoU(true, pred). 즉, 그리드 셀의 클래스 레이블 score * 바운딩 박스 내에 객체가 존재할 확률이다. Class scores는 클래스가 바운딩 박스에 등장할 확률과 객체가 예측된 박스에 얼마나 잘 맞는지를 나타낸다.
 
 ![]({{site.baseurl}}/images/20231005/img3.png)
 
-그림3 class scores 구하는 과정
+**그림3 class scores 구하는 과정**
 
+<br>
 그림에서 7x7개의 셀이 존재하여 각 그리드 셀마다 2개의 바운딩 박스를 그리므로, 총 98개의 바운딩 박스에 대한 클래스 scores를 생성한다.
 
-![]({{site.baseurl}}/images/20231005/img4.png)
-![]({{site.baseurl}}/images/20231005/img5.png) ![]({{site.baseurl}}/images/20231005/img6.png)
+![]({{site.baseurl}}/images/20231005/img6.png)
 
-그림4 class scores 생성
+**그림4 class scores 생성**
+
+<br>
 
 #### Classification
 1. 앞서 구한 class score가 confidence threshold보다 낮을 경우 0으로 만든다. 
@@ -43,7 +46,7 @@ tags: engineering wrting, yolo, object detection
 
 ![]({{site.baseurl}}/images/20231005/img7.png)
 
-그림5 classification 과정
+**그림5 classification 과정**
 
 <br>
 **NMS**
@@ -52,28 +55,35 @@ tags: engineering wrting, yolo, object detection
 
 ![]({{site.baseurl}}/images/20231005/img8.png)
 
-그림6 NMS
+**그림6 NMS**
 
+<br>
 NMS에 IoU개념이 사용된다. IoU는 바운딩 박스의 교집합/합집합 비율로 두 바운딩 박스가 얼마나 겹치는지에 대한 값을 나타낸다.
 
 ![]({{site.baseurl}}/images/20231005/img9.png)
 
-그림7 IoU
+**그림7 IoU**
 
+<br>
 앞서 Classification과정에서 Class score에 대하여 내림차순 정렬하였으므로 첫 번째 바운딩 박스 score가 최대(max)가 된다. 
 1.	Max와 다른 모든 바운딩 박스의 해당 클래스 socre를 비교한다.
 2.	만약 두 바운딩 박스의 IoU를 비교하여 IoU threshold보다 클 경우 해당 score를 0으로 설정한다. 이 과정을 거치면서 같은 객체를 가리키는 바운딩 박스가 제거된다.
 3.	다음으로 큰 바운딩 박스 score를 max로 설정한 후 위 과정을 반복한다.
 4.	이 과정을 모든 클래스에 대해 반복한다.
 5.	각 바운딩 박스의 class scores에서 최대값을 가지는 class로 분류하고 바운딩 박스를 그린다. 
+<br>
 
 ![]({{site.baseurl}}/images/20231005/img10.png)
 
-그림8
+**그림8**
 
 ![]({{site.baseurl}}/images/20231005/img11.png)
 
-그림9
+**그림9**
+
+그림8에서 바운딩 박스와 그림7에서 바운딩 박스 사이의 IoU가 IoU threshold보다 크다고 가정하면 그림8의 바운딩 박스는 제거된다.
+
+<br>
 
 ### YOLO 버전별 비교
 **YOLOv2**
@@ -100,18 +110,23 @@ NMS에 IoU개념이 사용된다. IoU는 바운딩 박스의 교집합/합집합
 1. 새로운 백본 도입: RepVGG를 기반으로 한 새로운 백본인 EfficientRep을 도입하여 이전 버전의 백본보다 더 높은 병렬성을 활용한다. 
 2. 새로운 분류 및 회귀 손실 함수를 사용: 분류에는 VariFocal손실을 사용하고 회귀에는 SloU/GloU회귀 손실을 사용한다.
 
+<br>
 
 ![]({{site.baseurl}}/images/20231005/table1.png)
 
-표 1 YOLO 버전 별 주요 변경 점
+**표 1 YOLO 버전 별 주요 변경 점**
 
-결론
+<br>
+
+## 결론
 YOLO는 사물을 분류하는 classification과 위치를 나타내는 localization을 한 번에 하는 1-stage-detection방식을 사용하여 실시간 객체 탐지한다.
 original YOLO에서 발생하는 문제를 개선하여 여러 버전이 출시되었다. 각 버전 별 YOLO 구조와 성능을 요약하면 표 2와 같다.
 
 ![]({{site.baseurl}}/images/20231005/table2.png)
 
-표 2 YOLO 버전 별 특징
+**표 2 YOLO 버전 별 특징**
+
+<br>
 
 표 2의 성능 지표(AP)에서 YOLO와 YOLOv2의 경우 VOC2007 데이터셋을 사용하여 평가되었고, 나머지는 COCO2017 데이터셋을 사용하여 평가하였다.
 
